@@ -84,7 +84,12 @@ class Geocode extends ApiBase {
 		];
 	}
 
-	protected function getExamples() {
+	// Wikia change - Wikia made method public for MW 1.19 compat
+	/**
+	 * @inheritdoc
+	 * @return array
+	 */
+	public function getExamples() {
 		return [
 			'api.php?action=geocode&locations=new york',
 			'api.php?action=geocode&locations=new york|brussels|london',
@@ -92,4 +97,14 @@ class Geocode extends ApiBase {
 		];
 	}
 
+
+	/**
+	 * Wikia change
+	 * MAIN-8474: In new version of MediaWiki and Maps extension ApiBase::getVersion method does not exist
+	 * However it still does in our 1.19 version and we need to implement it to prevent PHP fatal
+	 * @return string
+	 */
+	public function getVersion() {
+		return __CLASS__ . '-' . Maps_VERSION;
+	}
 }
