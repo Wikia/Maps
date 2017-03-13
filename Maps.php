@@ -43,7 +43,8 @@ if ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
 }
 
 // Internationalization
-$GLOBALS['wgMessagesDirs']['Maps'] = __DIR__ . '/i18n';
+// Wikia change - use PHP shim for i18n
+$GLOBALS['wgExtensionMessagesFiles']['Maps'] = __DIR__ . '/Maps.i18n.php';
 $GLOBALS['wgExtensionMessagesFiles']['MapsMagic'] = __DIR__ . '/Maps.i18n.magic.php';
 $GLOBALS['wgExtensionMessagesFiles']['MapsAlias'] = __DIR__ . '/Maps.i18n.alias.php';
 
