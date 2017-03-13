@@ -192,18 +192,6 @@ $GLOBALS['wgExtensionFunctions'][] = function () {
 	$leafletMaps = MapsMappingServices::getServiceInstance( 'leaflet' );
 	$leafletMaps->addFeature( 'display_map', MapsDisplayMapRenderer::class );
 
-
-
-
-	$GLOBALS['wgAvailableRights'][] = 'geocode';
-
-	// Users that can geocode. By default the same as those that can edit.
-	foreach ( $GLOBALS['wgGroupPermissions'] as $group => $rights ) {
-		if ( array_key_exists( 'edit' , $rights ) ) {
-			$GLOBALS['wgGroupPermissions'][$group]['geocode'] = $GLOBALS['wgGroupPermissions'][$group]['edit'];
-		}
-	}
-
 	$GLOBALS['wgParamDefinitions']['coordinate'] = [
 		'string-parser' => GeoCoordinateParser::class,
 	];
