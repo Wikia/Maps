@@ -6,6 +6,7 @@
 
 vendor/
 extensions/
+*.tar
 
 composer.phar
 composer.lock
