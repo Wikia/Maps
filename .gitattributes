@@ -8,5 +8,4 @@ INSTALL.md export-ignore
 phpunit.xml-dist export-ignore
 README.md export-ignore
 RELEASE-NOTES.md export-ignore
-schema export-ignore
 tests export-ignore
