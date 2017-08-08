@@ -44,6 +44,7 @@ if ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
 
 // Internationalization
 $GLOBALS['wgMessagesDirs']['Maps'] = __DIR__ . '/i18n';
+$GLOBALS['wgExtensionMessagesFiles']['Maps'] = __DIR__ . '/Maps.i18n.php';
 $GLOBALS['wgExtensionMessagesFiles']['MapsMagic'] = __DIR__ . '/Maps.i18n.magic.php';
 $GLOBALS['wgExtensionMessagesFiles']['MapsAlias'] = __DIR__ . '/Maps.i18n.alias.php';
 
@@ -61,13 +62,6 @@ $GLOBALS['wgExtensionFunctions'][] = function () {
 	// Only initialize the extension when all dependencies are present.
 	if ( !defined( 'Validator_VERSION' ) ) {
 		throw new Exception( 'You need to have Validator installed in order to use Maps' );
-	}
-
-	if ( version_compare( $GLOBALS['wgVersion'], '1.27c' , '<' ) ) {
-		throw new Exception(
-			'This version of Maps requires MediaWiki 1.27 or above; use Maps 4.2.x for older versions.'
-			. ' More information at https://github.com/JeroenDeDauw/Maps/blob/master/INSTALL.md'
-		);
 	}
 
 	define( 'Maps_VERSION' , '4.3' );
