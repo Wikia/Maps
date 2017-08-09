@@ -54,4 +54,29 @@ final class MapsHooks {
 
 		return true;
 	}
+
+	/**
+	 * Wikia change
+	 * Load library dependencies of display_map in the <body> after article wikitext
+	 * Registering them as head items will cause Oasis logic to put them after RL <script> in body
+	 * which would break all dependent modules.
+	 *
+	 * @param OutputPage $out
+	 * @param ParserOutput $parserOutput
+	 * @return bool
+	 */
+	public static function onOutputPageParserOutput( OutputPage $out, ParserOutput $parserOutput ) {
+		if ( !isset( $parserOutput->mapsMappingServices ) ) {
+			return true;
+		}
+
+		/** @var MapsMappingService $mapsMappingService */
+		foreach ( $parserOutput->mapsMappingServices as $mapsMappingService ) {
+			$html = $mapsMappingService->getDependencyHtml();
+
+			$out->addHTML( $html );
+		}
+
+		return true;
+	}
 }

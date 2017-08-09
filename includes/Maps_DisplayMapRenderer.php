@@ -50,7 +50,18 @@ class MapsDisplayMapRenderer {
 		);
 
 		$this->service->addDependencies( $parser );
-		$parser->getOutput()->addHeadItem( $configVars );
+
+		$parserOutput = $parser->getOutput();
+		$parserOutput->addHeadItem( $configVars );
+
+		// Wikia change: Load library dependencies in OutputPageParserOutput hook
+		// Loading them in the <head> will cause Oasis skin to load them after ResourceLoader
+		// so RL modules that depend on them will fail
+		if ( !isset( $parserOutput->mapsMappingServices ) ) {
+			$parserOutput->mapsMappingServices = [];
+		}
+
+		$parserOutput->mapsMappingServices[] = $this->service;
 
 		return $output;
 	}

@@ -99,6 +99,7 @@ $GLOBALS['wgExtensionFunctions'][] = function () {
 
 	$GLOBALS['wgHooks']['AdminLinks'][]                = 'MapsHooks::addToAdminLinks';
 	$GLOBALS['wgHooks']['MakeGlobalVariablesScript'][] = 'MapsHooks::onMakeGlobalVariablesScript';
+	$GLOBALS['wgHooks']['OutputPageParserOutput'][] = 'MapsHooks::onOutputPageParserOutput';
 
 	// Parser hooks
 

@@ -80,18 +80,14 @@ abstract class MapsMappingService {
 	/**
 	 * @since 0.6.3
 	 */
-	public final function addDependencies( &$parserOrOut ) {
-		$dependencies = $this->getDependencyHtml();
-
+	public final function addDependencies( $parserOrOut ) {
 		// Only add a head item when there are dependencies.
 		if ( $parserOrOut instanceof Parser ) {
-			if ( $dependencies ) {
-				$parserOrOut->getOutput()->addHeadItem( $dependencies );
-			}
-
 			$parserOrOut->getOutput()->addModules( $this->getResourceModules() );
 		}
 		elseif ( $parserOrOut instanceof OutputPage ) {
+			$dependencies = $this->getDependencyHtml();
+
 			if ( $dependencies !== false ) {
 				$parserOrOut->addHeadItem( md5( $dependencies ), $dependencies );
 			}
