@@ -61,7 +61,10 @@ class MapsDisplayMapRenderer {
 			$parserOutput->mapsMappingServices = [];
 		}
 
-		$parserOutput->mapsMappingServices[] = $this->service;
+		$serviceName = $this->service->getName();
+		if ( !isset( $parserOutput->mapsMappingServices[$serviceName] ) ) {
+			$parserOutput->mapsMappingServices[$serviceName] = $this->service;
+		}
 
 		return $output;
 	}
