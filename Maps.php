@@ -43,6 +43,7 @@ if ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
 
 // Internationalization
 $GLOBALS['wgMessagesDirs']['Maps'] = __DIR__ . '/i18n';
+$GLOBALS['wgExtensionMessagesFiles']['Maps'] = __DIR__ . '/Maps.i18n.php'; // Wikia change
 $GLOBALS['wgExtensionMessagesFiles']['MapsMagic'] = __DIR__ . '/Maps.i18n.magic.php';
 $GLOBALS['wgExtensionMessagesFiles']['MapsAlias'] = __DIR__ . '/Maps.i18n.alias.php';
 
@@ -61,12 +62,7 @@ $GLOBALS['wgExtensionFunctions'][] = function() {
 		throw new Exception( 'You need to have Validator installed in order to use Maps' );
 	}
 
-	if ( version_compare( $GLOBALS['wgVersion'], '1.27c', '<' ) ) {
-		throw new Exception(
-			'This version of Maps requires MediaWiki 1.27 or above; use Maps 4.2.x for older versions.'
-			. ' More information at https://github.com/JeroenDeDauw/Maps/blob/master/INSTALL.md'
-		);
-	}
+	// Wikia change - hardcoded exception was removed here
 
 	define( 'Maps_VERSION', '5.2.0 alpha' );
 	define( 'SM_VERSION', Maps_VERSION );
@@ -101,41 +97,42 @@ $GLOBALS['wgExtensionFunctions'][] = function() {
 
 	$GLOBALS['wgHooks']['AdminLinks'][] = 'MapsHooks::addToAdminLinks';
 	$GLOBALS['wgHooks']['MakeGlobalVariablesScript'][] = 'MapsHooks::onMakeGlobalVariablesScript';
+	$GLOBALS['wgHooks']['OutputPageParserOutput'][] = 'MapsHooks::onOutputPageParserOutput';
 
 	// Parser hooks
 
 	// Required for #coordinates.
-	$GLOBALS['wgHooks']['ParserFirstCallInit'][] = function( Parser &$parser ) {
+	$GLOBALS['wgHooks']['ParserFirstCallInit'][] = function( Parser $parser ) {
 		$instance = new MapsCoordinates();
 		return $instance->init( $parser );
 	};
 
-	$GLOBALS['wgHooks']['ParserFirstCallInit'][] = function( Parser &$parser ) {
+	$GLOBALS['wgHooks']['ParserFirstCallInit'][] = function( Parser $parser ) {
 		$instance = new MapsDisplayMap();
 		return $instance->init( $parser );
 	};
 
-	$GLOBALS['wgHooks']['ParserFirstCallInit'][] = function( Parser &$parser ) {
+	$GLOBALS['wgHooks']['ParserFirstCallInit'][] = function( Parser $parser ) {
 		$instance = new MapsDistance();
 		return $instance->init( $parser );
 	};
 
-	$GLOBALS['wgHooks']['ParserFirstCallInit'][] = function( Parser &$parser ) {
+	$GLOBALS['wgHooks']['ParserFirstCallInit'][] = function( Parser $parser ) {
 		$instance = new MapsFinddestination();
 		return $instance->init( $parser );
 	};
 
-	$GLOBALS['wgHooks']['ParserFirstCallInit'][] = function( Parser &$parser ) {
+	$GLOBALS['wgHooks']['ParserFirstCallInit'][] = function( Parser $parser ) {
 		$instance = new MapsGeocode();
 		return $instance->init( $parser );
 	};
 
-	$GLOBALS['wgHooks']['ParserFirstCallInit'][] = function( Parser &$parser ) {
+	$GLOBALS['wgHooks']['ParserFirstCallInit'][] = function( Parser $parser ) {
 		$instance = new MapsGeodistance();
 		return $instance->init( $parser );
 	};
 
-	$GLOBALS['wgHooks']['ParserFirstCallInit'][] = function( Parser &$parser ) {
+	$GLOBALS['wgHooks']['ParserFirstCallInit'][] = function( Parser $parser ) {
 		$instance = new MapsMapsDoc();
 		return $instance->init( $parser );
 	};

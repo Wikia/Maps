@@ -19,7 +19,7 @@ final class MapsHooks {
 	 *
 	 * @return boolean
 	 */
-	public static function addToAdminLinks( ALTree &$admin_links_tree ) {
+	public static function addToAdminLinks( ALTree $admin_links_tree ) {
 		$displaying_data_section = $admin_links_tree->getSection(
 			wfMessage( 'smw_adminlinks_displayingdata' )->text()
 		);
@@ -59,6 +59,21 @@ final class MapsHooks {
 		$vars += $egMapsGlobalJSVars;
 
 		return true;
+	}
+
+	public static function onOutputPageParserOutput( OutputPage $out, ParserOutput $parserOutput ) {
+		if ( !isset( $parserOutput->mapsMappingServices ) ) {
+			return;
+		}
+
+		/** @var MapsMappingService $service */
+		foreach ( $parserOutput->mapsMappingServices as $service ) {
+			$html = $service->getDependencyHtml();
+
+			if ( $html ) {
+				$out->addHTML( $html );
+			}
+		}
 	}
 
 }

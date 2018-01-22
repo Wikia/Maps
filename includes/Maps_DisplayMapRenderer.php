@@ -49,9 +49,20 @@ class MapsDisplayMapRenderer {
 		);
 
 		$parserOutput = $parser->getOutput();
-
-		$this->service->addDependencies( $parserOutput );
 		$parserOutput->addHeadItem( $configVars );
+
+		// Wikia change - defer adding service html dependencies
+		// They will be handled in OutputPageParserOutput hook handler
+
+		$parserOutput->addModules( $this->service->getResourceModules() );
+
+		$parserOutput->mapsMappingServices = $parserOutput->mapsMappingServices ?? [];
+
+		$serviceName = $this->service->getName();
+
+		$parserOutput->mapsMappingServices[$serviceName] = $this->service;
+
+		// end Wikia change
 
 		return $output;
 	}

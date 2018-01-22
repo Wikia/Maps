@@ -69,11 +69,19 @@ class Geocode extends ApiBase {
 		];
 	}
 
-	protected function getExamples() {
+	// Wikia change - make method public for MW 1.19 compat
+	public function getExamples() {
 		return [
 			'api.php?action=geocode&locations=new york',
 			'api.php?action=geocode&locations=new york|brussels|london',
 		];
 	}
 
+	/**
+	 * Wikia change - implement MW 1.19 required method
+	 * @return string
+	 */
+	public function getVersion() {
+		return Maps_VERSION;
+	}
 }

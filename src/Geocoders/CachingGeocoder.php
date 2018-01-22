@@ -28,7 +28,8 @@ class CachingGeocoder implements Geocoder {
 	 * @return LatLongValue|null
 	 */
 	public function geocode( string $address ) {
-		$key = $this->cache->makeKey( __CLASS__, $address );
+		// Wikia change - wfMemcKey for 1.19 compatibility
+		$key = wfMemcKey( __CLASS__, $address );
 
 		$coordinates = $this->cache->get( $key );
 
