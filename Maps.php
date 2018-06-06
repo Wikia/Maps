@@ -34,8 +34,6 @@ define( 'Maps_COORDS_DMS', 'dms' );
 define( 'Maps_COORDS_DM', 'dm' );
 define( 'Maps_COORDS_DD', 'dd' );
 
-require_once __DIR__ . '/Maps_Settings.php';
-
 // Include the composer autoloader if it is present.
 if ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
 	include_once( __DIR__ . '/vendor/autoload.php' );
@@ -47,7 +45,7 @@ $GLOBALS['wgExtensionMessagesFiles']['MapsMagic'] = __DIR__ . '/Maps.i18n.magic.
 $GLOBALS['wgExtensionMessagesFiles']['MapsAlias'] = __DIR__ . '/Maps.i18n.alias.php';
 
 $GLOBALS['wgExtensionFunctions'][] = function() {
-	if ( $GLOBALS['egMapsDisableExtension'] ) {
+	if ( !empty( $GLOBALS['egMapsDisableExtension'] ) ) {
 		return true;
 	}
 
@@ -66,6 +64,14 @@ $GLOBALS['wgExtensionFunctions'][] = function() {
 			'This version of Maps requires MediaWiki 1.27 or above; use Maps 4.2.x for older versions.'
 			. ' More information at https://github.com/JeroenDeDauw/Maps/blob/master/INSTALL.md'
 		);
+	}
+
+	// Defer extracting the default settings to the global scope until extension initialization
+	// This allows shared installs to override configuration settings on a per-wiki basis
+	foreach ( require_once __DIR__ . '/Maps_Settings.php' as $name => $defaultValue ) {
+		if ( !array_key_exists( $name, $GLOBALS ) ) {
+			$GLOBALS[$name] = $defaultValue;
+		}
 	}
 
 	define( 'Maps_VERSION', '5.4.0 alpha' );
