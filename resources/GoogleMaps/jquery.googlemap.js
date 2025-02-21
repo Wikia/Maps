@@ -73,6 +73,10 @@
 			}
 		};
 
+		var textIsSanitized = function(text) {
+			return text.startsWith('<div') && /^<div\b[^>]*\bclass\s*=\s*["'][^"']*\bmw-parser-output\b[^"']*["']/i.test(text);
+		}
+
 
 		/**
 		 * Creates a new marker with the provided data,
@@ -91,7 +95,11 @@
 			};
 
 			if ( markerOptions.text !== '' ) {
-				markerOptions.text = $('<div>' + markerOptions.text + '</div>').text();
+				if(textIsSanitized(markerOptions.text)) {
+					markerOptions.text = $('<div>' + markerOptions.text + '</div>').text()
+				} else {
+					markerOptions.text = $('<div>').text(markerOptions.text).text();
+				}
 			}
 
 			if (!markerData.hasOwnProperty('icon') || markerData.icon !== '') {
@@ -823,7 +831,11 @@
 			}
 
 			this.openWindow = new google.maps.InfoWindow();
-			this.openWindow.setContent( markerData.text );
+			var text = textIsSanitized(markerData.text)
+			? markerData.text
+			: $('<span>').text(markerData.text).html()
+			
+			this.openWindow.setContent( text );
 
 			if ( event.latLng !== undefined ) {
 				this.openWindow.setPosition( event.latLng );
